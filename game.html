@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+      }
+      .leftcolor {
+        width: 48vw;
+        flex:1;
+      }
+      .middleline {
+        width: 4px;
+        height: 100vh;
+        background-color: black;
+      }
+      .rightcolor{
+        width: 48vw;
+        background-color: rgb(76,103,5);
+        flex:1;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;  
+      }
+      p {
+        user-select: none;
+      }
+      input[type="range"] {
+        width: 80%; /* 設置滑動條的寬度 */
+        max-width: 500px; /* 設置滑動條的最大寬度 */
+        margin: 10px 0; /* 為每個滑動條添加上下邊距 */
+      }
+      #slider-value{
+        font-size:50px;
+      }
+    </style>
+  </head>
+    <body>
+        <div class="leftcolor"></div>
+        <div class="middleline"></div>
+        <div class="rightcolor">
+            <div id="slider-value"></div>
+            <p>
+                <label for="sliderR">R:</label>
+                <input type="range" class="slider" id="sliderR" min="0" max="255" value="128" step="1">
+            </P>
+            <p>
+                <label for="sliderG">G:</label>
+                <input type="range" class="slider" id="sliderG" min="0" max="255" value="128" step="1">
+            </p>
+            <p>
+                <label for="sliderB">B:</label>
+                <input type="range" class="slider" id="sliderB" min="0" max="255" value="128" step="1">
+            </p>
+        </div>
+    </body>
+  <script>
+    let leftcolor = document.querySelector('.leftcolor');
+    let rightcolor = document.querySelector('.rightcolor');
+    const sliders = document.querySelectorAll('.slider');
+    const sliderValue = document.getElementById('slider-value');
+
+    window.onload = function () {
+      let loadcolor = localStorage.getItem("backgroudColor");
+      let loadRightcolor = localStorage.getItem("RightColorValue");
+      if (loadcolor) {
+        leftcolor.style.backgroundColor = "rgb(" + loadcolor + ")";
+        rightcolor.style.backgroundColor = "rgb(" + loadRightcolor + ")";
+        sliderValue.textContent = loadRightcolor;
+      } else {
+        leftcolor.style.backgroundColor = "rgb(255, 255, 255)";
+        rightcolor.style.backgroundColor = "rgb(255, 255, 255)";
+        sliderValue.textContent = "255, 255, 255";
+      }
+    };
+
+    leftcolor.addEventListener("click", function (color) {
+      let newColor = randomrgb();
+      leftcolor.style.backgroundColor = "rgb(" + newColor + ")";
+      localStorage.setItem("backgroudColor", newColor);
+    //   document.getElementById("colorgb").textContent = newColor;
+      console.log("NewColor:" + newColor);
+    });
+
+    leftcolor.addEventListener("contextmenu", function (event) {
+      event.preventDefault();
+      navigator.clipboard.writeText(localStorage.getItem("backgroudColor"));
+    });
+
+    function getRandomByte() {
+      return Math.floor(Math.random() * 256);
+    }
+
+    function randomrgb() {
+      let r = getRandomByte();
+      let g = getRandomByte();
+      let b = getRandomByte();
+
+      return `${r},${g},${b}`;
+    }
+
+    function updateColor(){
+        const r = sliderR.value;
+        const g = sliderG.value;
+        const b = sliderB.value;
+        console.log(`rgb:(${r},${g},${b})`);
+        rightcolor.style.backgroundColor = `rgb(${r},${g},${b})`;
+        sliderValue.textContent = `${r},${g},${b}`;
+        localStorage.setItem("RightColorValue", `${r},${g},${b}`);
+    }
+    sliders.forEach(slider => {
+    slider.addEventListener('input', updateColor);})
+  </script>
+</html>

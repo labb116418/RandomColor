@@ -11,7 +11,7 @@
         padding: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgb(0, 0, 0);
+        background-color: rgb(255, 255, 255);
         overflow: hidden;
       }
       .countiner {
@@ -40,6 +40,9 @@
       if (loadcolor) {
         body.style.backgroundColor = "rgb(" + loadcolor + ")";
         document.getElementById("colorgb").textContent = loadcolor;
+      }else{
+        body.style.backgroundColor='rgb(255, 255, 255)';
+        document.getElementById("colorgb").textContent = '255, 255, 255';
       }
     };
 
