@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgb(0, 0, 0);
+        overflow: hidden;
+      }
+      .countiner {
+        display: flex;
+        justify-content: center; /* 水平居中 */
+        align-items: center; /* 垂直居中 */
+        height: 100vh; /* 使用視窗高度，讓內容垂直居中 */
+        font-size: 2rem;
+        text-align: center; /* 確保文字在 p 元素內部居中 */
+      }
+      p {
+        user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="countiner">
+      <p id="colorgb"></p>
+    </div>
+  </body>
+  <script>
+    let body = document.querySelector("body");
+
+    window.onload = function () {
+      let loadcolor = localStorage.getItem("backgroudColor");
+      if (loadcolor) {
+        body.style.backgroundColor = "rgb(" + loadcolor + ")";
+        document.getElementById("colorgb").textContent = loadcolor;
+      }
+    };
+
+    body.addEventListener("click", function (color) {
+      let newColor = randomrgb();
+      body.style.backgroundColor = "rgb(" + newColor + ")";
+      localStorage.setItem("backgroudColor", newColor);
+      document.getElementById("colorgb").textContent = newColor;
+      console.log("NewColor:" + newColor);
+    });
+
+    body.addEventListener("contextmenu", function (event) {
+      event.preventDefault();
+      navigator.clipboard.writeText(localStorage.getItem("backgroudColor"));
+    });
+
+    function getRandomByte() {
+      return Math.floor(Math.random() * 256);
+    }
+
+    function randomrgb() {
+      let r = getRandomByte();
+      let g = getRandomByte();
+      let b = getRandomByte();
+
+      return `${r},${g},${b}`;
+    }
+  </script>
+</html>
